@@ -31,16 +31,16 @@ Additionally, if you would like to create layers from a dictionary, you want thi
     "name": "My hot hot ABCD",
     ...
 
-  };
-  fromSJSONObject(obj);
+    };
+    fromSJSONObject(obj);
 
 If you want to support older versions of Sketch:
 
-  import JSONPlugin from 'sketchapp-json-plugin';
-  if (JSONPlugin.appVersionSupported()) {
-    const layer = SJSON.fromSJSON(myJSON);
-    ...
-    document.pages[0].addLayers([layer]);
-  } else {
-    // Use old code path
-  }
+    import JSONPlugin from 'sketchapp-json-plugin';
+    if (JSONPlugin.appVersionSupported()) {
+      const layer = SJSON.fromSJSON(myJSON);
+      ...
+      document.pages[0].addLayers([layer]);
+    } else {
+      // Use old code path
+    }
