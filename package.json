@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Utilities for working with the Sketch JSON internal formats",
   "main": "index.js",
-  "repository": {},
+  "repository": "https://github.com/darknoon/sketchapp-json-plugin",
   "author": "Andrew Pouliot",
   "license": "MIT",
   "dependencies": {
