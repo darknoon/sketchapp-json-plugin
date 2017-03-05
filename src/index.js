@@ -1,8 +1,8 @@
-/* @flow */
 
 /*
 This is pretty simplistic at the moment, since it doesn't handle references. More work is needed to actually
 */
+
 
 let envOK = (
    MSJSONDataArchiver !== undefined
@@ -10,34 +10,34 @@ let envOK = (
 );
 
 function appVersion() {
-  if (NSBundle !== undefined) {}
+  if (NSBundle !== undefined) {
     return NSBundle.mainBundle().infoDictionary().CFBundleShortVersionString;
   } else {
     return undefined;
   }
 }
 
-const _checkEnv() => {
+const _checkEnv = () => {
   if (!envOK) {
     throw new Error("sketchapp-json-plugin needs to run within the correct version of Sketch. You are running " + appVersion());
   }
 }
 
-export function appVersionSupported(): bool {
+export function appVersionSupported() {
   return envOK;
 }
 
 // Converts an object, eg from context.selection into its JSON string representation
-export function toSJSON(sketchObject: any) {
+export function toSJSON(sketchObject) {
   _checkEnv();
   if (!sketchObject) {
     return null;
   }
-  const imm = o.immutableModelObject();
+  const imm = sketchObject.immutableModelObject();
   return MSJSONDataArchiver.archiveStringWithRootObject_error_(imm, null);
 }
 
-export function fromSJSON(json: string) {
+export function fromSJSON(json) {
   _checkEnv();
   const dict = JSON.parse(json);
   if (!dict) return null;
