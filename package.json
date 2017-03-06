@@ -7,7 +7,9 @@
   "author": "Andrew Pouliot",
   "license": "MIT",
   "scripts": {
-    "build": "babel src/ -d lib/"
+    "build": "babel src/ -d lib/",
+    "prepublish": "npm run build",
+    "watch": "npm run build -- --watch"
   },
   "dependencies": {
     "sketchapp-json-flow-types": "^0.0.1"

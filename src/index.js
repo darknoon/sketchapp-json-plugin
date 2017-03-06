@@ -3,7 +3,6 @@
 This is pretty simplistic at the moment, since it doesn't handle references. More work is needed to actually
 */
 
-
 let envOK = (
    MSJSONDataArchiver !== undefined
 && MSJSONDictionaryUnarchiver !== undefined
