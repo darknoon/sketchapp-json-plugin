@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "invariant": "^2.2.2",
-    "sketchapp-json-flow-types": "^0.0.1"
+    "sketchapp-json-flow-types": "^0.0.2"
   },
   "devDependencies": {
     "babel-cli": "^6.23.0",
