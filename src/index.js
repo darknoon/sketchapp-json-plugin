@@ -1,4 +1,4 @@
-
+const invariant = require('invariant');
 /*
 This is pretty simplistic at the moment, since it doesn't handle references. More work is needed to actually
 */
@@ -15,11 +15,8 @@ function appVersion() {
   }
 }
 
-const _checkEnv = () => {
-  if (!envOK) {
-    throw new Error("sketchapp-json-plugin needs to run within the correct version of Sketch. You are running " + appVersion());
-  }
-}
+const _checkEnv = () =>
+  invariant(envOK, `sketchapp-json-plugin needs to run within the correct version of Sketch. You are running ${appVersion()}`);
 
 export function appVersionSupported() {
   return envOK;
