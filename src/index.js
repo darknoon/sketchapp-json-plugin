@@ -3,13 +3,12 @@
 This is pretty simplistic at the moment, since it doesn't handle references. More work is needed to actually
 */
 
-let envOK = (
-   MSJSONDataArchiver !== undefined
-&& MSJSONDictionaryUnarchiver !== undefined
-);
+let envOK =
+   (typeof MSJSONDataArchiver !== 'undefined')
+&& (typeof MSJSONDictionaryUnarchiver !== 'undefined')
 
 function appVersion() {
-  if (NSBundle !== undefined) {
+  if (typeof NSBundle !== 'undefined') {
     return NSBundle.mainBundle().infoDictionary().CFBundleShortVersionString;
   } else {
     return undefined;
