@@ -1,4 +1,4 @@
-const invariant = require('invariant');
+import invariant from 'invariant';
 /*
 This is pretty simplistic at the moment, since it doesn't handle references. More work is needed to actually
 */
