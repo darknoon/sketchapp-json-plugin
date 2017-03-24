@@ -1,26 +1,22 @@
-
+import invariant from 'invariant';
 /*
 This is pretty simplistic at the moment, since it doesn't handle references. More work is needed to actually
 */
 
-let envOK = (
-   MSJSONDataArchiver !== undefined
-&& MSJSONDictionaryUnarchiver !== undefined
-);
+let envOK =
+   (typeof MSJSONDataArchiver !== 'undefined')
+&& (typeof MSJSONDictionaryUnarchiver !== 'undefined')
 
 function appVersion() {
-  if (NSBundle !== undefined) {
+  if (typeof NSBundle !== 'undefined') {
     return NSBundle.mainBundle().infoDictionary().CFBundleShortVersionString;
   } else {
     return undefined;
   }
 }
 
-const _checkEnv = () => {
-  if (!envOK) {
-    throw new Error("sketchapp-json-plugin needs to run within the correct version of Sketch. You are running " + appVersion());
-  }
-}
+const _checkEnv = () =>
+  invariant(envOK, `sketchapp-json-plugin needs to run within the correct version of Sketch. You are running ${appVersion()}`);
 
 export function appVersionSupported() {
   return envOK;
