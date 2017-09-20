@@ -3,6 +3,14 @@ import invariant from 'invariant';
 This is pretty simplistic at the moment, since it doesn't handle references. More work is needed to actually
 */
 
+/*
+Versions based on discussion info: http://sketchplugins.com/d/316-sketch-version
+*/
+// Internal Sketch Version (ex: 88 => v43+)
+const SKETCH_LOWEST_COMPATIBLE_VERSION = '88';
+// External Sketch Version
+const SKETCH_LOWEST_COMPATIBLE_APP_VERSION = '43';
+
 let envOK =
    (typeof MSJSONDataArchiver !== 'undefined')
 && (typeof MSJSONDictionaryUnarchiver !== 'undefined')
@@ -16,7 +24,7 @@ function appVersion() {
 }
 
 const _checkEnv = () =>
-  invariant(envOK, `sketchapp-json-plugin needs to run within the correct version of Sketch. You are running ${appVersion()}`);
+  invariant(envOK, `sketchapp-json-plugin needs to run within Sketch v${SKETCH_LOWEST_COMPATIBLE_APP_VERSION}+. You are running ${appVersion()}`);
 
 export function appVersionSupported() {
   return envOK;
@@ -43,9 +51,9 @@ export function fromSJSON(json) {
 }
 
 // Takes a Sketch JSON tree and turns it into a native object. May throw on invalid data
-export function fromSJSONDictionary(jsonTree) {
+export function fromSJSONDictionary(jsonTree, version = SKETCH_LOWEST_COMPATIBLE_VERSION) {
   _checkEnv();
-  const decoded = MSJSONDictionaryUnarchiver.unarchiveObjectFromDictionary_asVersion_corruptionDetected_error(jsonTree,999,nil,nil);
+  const decoded = MSJSONDictionaryUnarchiver.unarchiveObjectFromDictionary_asVersion_corruptionDetected_error(jsonTree, version, null, null);
   const mutableClass = decoded.class().mutableClass();
   return mutableClass.alloc().initWithImmutableModelObject(decoded);
 }

@@ -34,7 +34,7 @@ Additionally, if you would like to create layers from a dictionary, you want thi
     };
     fromSJSONObject(obj);
 
-If you want to support older versions of Sketch:
+If you want to guard against legacy versions of Sketch (v42 and under):
 
     import JSONPlugin from 'sketchapp-json-plugin';
     if (JSONPlugin.appVersionSupported()) {
