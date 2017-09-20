@@ -51,9 +51,9 @@ export function fromSJSON(json) {
 }
 
 // Takes a Sketch JSON tree and turns it into a native object. May throw on invalid data
-export function fromSJSONDictionary(jsonTree, version = SKETCH_LOWEST_COMPATIBLE_VERSION) {
+export function fromSJSONDictionary(jsonTree) {
   _checkEnv();
-  const decoded = MSJSONDictionaryUnarchiver.unarchiveObjectFromDictionary_asVersion_corruptionDetected_error(jsonTree, version, null, null);
+  const decoded = MSJSONDictionaryUnarchiver.unarchiveObjectFromDictionary_asVersion_corruptionDetected_error(jsonTree, SKETCH_LOWEST_COMPATIBLE_VERSION, null, null);
   const mutableClass = decoded.class().mutableClass();
   return mutableClass.alloc().initWithImmutableModelObject(decoded);
 }
