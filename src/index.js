@@ -1,7 +1,15 @@
-import invariant from 'invariant';
+// @flow
 /*
-This is pretty simplistic at the moment, since it doesn't handle references. More work is needed to actually
+  This is pretty simplistic at the moment, since it doesn't handle references.
+  More work is needed to actually
 */
+import invariant from 'invariant';
+
+// Global types
+declare var MSJSONDataArchiver: Object;
+declare var MSJSONDictionaryUnarchiver: Object;
+declare var NSBundle: Object;
+type SketchObject = any;
 
 /*
 Versions based on discussion info: http://sketchplugins.com/d/316-sketch-version
@@ -11,49 +19,61 @@ const SKETCH_LOWEST_COMPATIBLE_VERSION = '88';
 // External Sketch Version
 const SKETCH_LOWEST_COMPATIBLE_APP_VERSION = '43';
 
-let envOK =
-   (typeof MSJSONDataArchiver !== 'undefined')
-&& (typeof MSJSONDictionaryUnarchiver !== 'undefined')
+const envOK =
+  typeof MSJSONDataArchiver !== 'undefined' &&
+  typeof MSJSONDictionaryUnarchiver !== 'undefined';
 
-function appVersion() {
+function appVersion(): string {
   if (typeof NSBundle !== 'undefined') {
     return NSBundle.mainBundle().infoDictionary().CFBundleShortVersionString;
-  } else {
-    return undefined;
   }
+  return 'Unknown';
 }
 
-const _checkEnv = () =>
-  invariant(envOK, `sketchapp-json-plugin needs to run within Sketch v${SKETCH_LOWEST_COMPATIBLE_APP_VERSION}+. You are running ${appVersion()}`);
+const checkEnv = () =>
+  invariant(
+    envOK,
+    `sketchapp-json-plugin needs to run within Sketch v${SKETCH_LOWEST_COMPATIBLE_APP_VERSION}+. You are running version: ${appVersion()}`
+  );
 
-export function appVersionSupported() {
+export function appVersionSupported(): boolean {
   return envOK;
 }
 
 // Converts an object, eg from context.selection into its JSON string representation
-export function toSJSON(sketchObject) {
-  _checkEnv();
+export function toSJSON(sketchObject: SketchObject): ?string {
+  checkEnv();
   if (!sketchObject) {
     return null;
   }
   const imm = sketchObject.immutableModelObject();
+  // eslint-disable-next-line no-underscore-dangle
   return MSJSONDataArchiver.archiveStringWithRootObject_error_(imm, null);
 }
 
-export function fromSJSON(json) {
-  _checkEnv();
+// Takes a Sketch JSON tree and turns it into a native object. May throw on invalid data
+export function fromSJSONDictionary(jsonTree: {
+  [string]: any
+}): ?SketchObject {
+  checkEnv();
+  const decoded = MSJSONDictionaryUnarchiver.unarchiveObjectFromDictionary_asVersion_corruptionDetected_error(
+    jsonTree,
+    SKETCH_LOWEST_COMPATIBLE_VERSION,
+    null,
+    null
+  );
+  const mutableClass = decoded.class().mutableClass();
+  return mutableClass.alloc().initWithImmutableModelObject(decoded);
+}
+
+export function fromSJSON(json: string): ?SketchObject {
+  checkEnv();
   const dict = JSON.parse(json);
   if (!dict) return null;
+
+  // eslint-disable-next-line no-underscore-dangle
   if (dict._class.length <= 0) {
     return null;
   }
   return fromSJSONDictionary(dict);
-}
-
-// Takes a Sketch JSON tree and turns it into a native object. May throw on invalid data
-export function fromSJSONDictionary(jsonTree) {
-  _checkEnv();
-  const decoded = MSJSONDictionaryUnarchiver.unarchiveObjectFromDictionary_asVersion_corruptionDetected_error(jsonTree, SKETCH_LOWEST_COMPATIBLE_VERSION, null, null);
-  const mutableClass = decoded.class().mutableClass();
-  return mutableClass.alloc().initWithImmutableModelObject(decoded);
 }
