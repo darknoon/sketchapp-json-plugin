@@ -6,8 +6,8 @@ This is pretty simplistic at the moment, since it doesn't handle references. Mor
 /*
 Versions based on discussion info: http://sketchplugins.com/d/316-sketch-version
 */
-// Internal Sketch Version (ex: 88 => v43+)
-const SKETCH_LOWEST_COMPATIBLE_VERSION = '88';
+// Internal Sketch Version (ex: 95 => v47 and below)
+const SKETCH_HIGHEST_COMPATIBLE_VERSION = '95';
 // External Sketch Version
 const SKETCH_LOWEST_COMPATIBLE_APP_VERSION = '43';
 
@@ -53,7 +53,7 @@ export function fromSJSON(json) {
 // Takes a Sketch JSON tree and turns it into a native object. May throw on invalid data
 export function fromSJSONDictionary(jsonTree) {
   _checkEnv();
-  const decoded = MSJSONDictionaryUnarchiver.unarchiveObjectFromDictionary_asVersion_corruptionDetected_error(jsonTree, SKETCH_LOWEST_COMPATIBLE_VERSION, null, null);
+  const decoded = MSJSONDictionaryUnarchiver.unarchiveObjectFromDictionary_asVersion_corruptionDetected_error(jsonTree, SKETCH_HIGHEST_COMPATIBLE_VERSION, null, null);
   const mutableClass = decoded.class().mutableClass();
   return mutableClass.alloc().initWithImmutableModelObject(decoded);
 }
