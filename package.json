@@ -10,7 +10,7 @@
     "lib/"
   ],
   "scripts": {
-    "build": "babel src/ -d lib/ && npm run flow-build",
+    "build": "npm run flow-build && babel src/ -d lib/",
     "flow-build": "flow-copy-source src lib",
     "prepublish": "npm run test && npm run build",
     "watch": "npm run build -- --watch",
