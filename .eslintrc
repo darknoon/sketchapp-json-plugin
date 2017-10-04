@@ -1,0 +1,13 @@
+{
+  "root": true,
+  "parser": "babel-eslint",
+  "extends": ["prettier"],
+  "globals": {
+    "MSModelObjectCommon": true,
+    "MSJSONDataArchiver": true
+  },
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": "error"
+  }
+}

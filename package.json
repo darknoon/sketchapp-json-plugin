@@ -6,18 +6,41 @@
   "repository": "https://github.com/darknoon/sketchapp-json-plugin",
   "author": "Andrew Pouliot",
   "license": "MIT",
+  "files": [
+    "lib/"
+  ],
   "scripts": {
-    "build": "babel src/ -d lib/",
-    "prepublish": "npm run build",
-    "watch": "npm run build -- --watch"
+    "build": "npm run flow-build && babel src/ -d lib/",
+    "flow-build": "flow-copy-source src lib",
+    "prepublish": "npm run test && npm run build",
+    "watch": "npm run build -- --watch",
+    "flow": "flow",
+    "lint": "eslint ./src",
+    "test": "npm run lint && npm run flow",
+    "precommit": "lint-staged"
   },
   "dependencies": {
-    "invariant": "^2.2.2",
-    "sketchapp-json-flow-types": "^0.0.2"
+    "invariant": "^2.2.2"
   },
   "devDependencies": {
     "babel-cli": "^6.23.0",
+    "babel-eslint": "^7.1.0",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-preset-es2015": "^6.22.0",
-    "babel-preset-stage-3": "^6.22.0"
+    "babel-preset-stage-3": "^6.22.0",
+    "eslint": "^3.9.1",
+    "eslint-config-prettier": "^2.6.0",
+    "eslint-plugin-prettier": "^2.3.1",
+    "flow-bin": "^0.36.0",
+    "flow-copy-source": "^1.1.0",
+    "husky": "^0.14.3",
+    "lint-staged": "^3.4.0",
+    "prettier": "^1.7.0"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write \"src/**/*.js\"",
+      "git add"
+    ]
   }
 }

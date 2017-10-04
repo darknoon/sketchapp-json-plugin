@@ -4,13 +4,18 @@ Provides utilities for basing your plugins on the JSON format instead of learnin
 
 This is indended to be used within the Sketch plugin environment; to generate sketch files entirely in node.js, you need a different library.
 
-There are 2 main APIs:
+There are 3 main APIs:
 
     // Converts an object, eg from context.selection into a JSON string representation
     toSJSON(sketchObject);
 
-    // Takes a Sketch JSON tree and turns it into a native object. May throw on invalid data
-    fromSJSON(json);
+    // Takes a Sketch JS object tree with (optional) Sketch version and turns it into a native object. May throw on invalid data
+    fromSJSONDictionary(jsObject, version);
+
+    // Convenience method that converts JSON strings to be used with `fromSJSONDictionary`
+    fromSJSON(json, version);
+
+> NOTE: The `version` parameter is used to specify the highest Sketch version number you would like to support. Also, it doesn't follow the normal Sketch public version numbers (e.g. v45, v46, etc). Instead it uses an internal build number. You can find your desired version using the handy map in this discussion thread: http://sketchplugins.com/d/316-sketch-version.
 
 
 Additionally, if you would like to create layers from a dictionary, you want this:
