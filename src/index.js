@@ -14,8 +14,9 @@ type SketchObject = any;
 /*
 Versions based on discussion info: http://sketchplugins.com/d/316-sketch-version
 */
-// Internal Sketch Version (ex: 95 => v47 and below)
-const SKETCH_HIGHEST_COMPATIBLE_VERSION = '95';
+// Internal Sketch Version
+// Using a high number to basically allow all versions
+const SKETCH_HIGHEST_COMPATIBLE_VERSION = '999';
 // External Sketch Version
 const SKETCH_LOWEST_COMPATIBLE_APP_VERSION = '43';
 
@@ -51,14 +52,17 @@ export function toSJSON(sketchObject: SketchObject): ?string {
   return MSJSONDataArchiver.archiveStringWithRootObject_error_(imm, null);
 }
 
-// Takes a Sketch JSON tree and turns it into a native object. May throw on invalid data
-export function fromSJSONDictionary(jsonTree: {
-  [string]: any
-}): ?SketchObject {
+// Takes a Sketch JS object tree and turns it into a native object. May throw on invalid data
+export function fromSJSONDictionary(
+  jsTree: {
+    [string]: any
+  },
+  version: ?string = SKETCH_HIGHEST_COMPATIBLE_VERSION
+): ?SketchObject {
   checkEnv();
   const decoded = MSJSONDictionaryUnarchiver.unarchiveObjectFromDictionary_asVersion_corruptionDetected_error(
-    jsonTree,
-    SKETCH_HIGHEST_COMPATIBLE_VERSION,
+    jsTree,
+    version,
     null,
     null
   );
@@ -66,7 +70,8 @@ export function fromSJSONDictionary(jsonTree: {
   return mutableClass.alloc().initWithImmutableModelObject(decoded);
 }
 
-export function fromSJSON(json: string): ?SketchObject {
+// Takes a Sketch JSON tree and turns it into a native object.
+export function fromSJSON(json: string, version: ?string): ?SketchObject {
   checkEnv();
   const dict = JSON.parse(json);
   if (!dict) return null;
@@ -75,5 +80,5 @@ export function fromSJSON(json: string): ?SketchObject {
   if (dict._class.length <= 0) {
     return null;
   }
-  return fromSJSONDictionary(dict);
+  return fromSJSONDictionary(dict, version);
 }
