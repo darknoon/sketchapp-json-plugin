@@ -8,7 +8,8 @@
   "license": "MIT",
   "scripts": {
     "build": "babel src/ -d lib/",
-    "prepublish": "npm run build",
+    "prepare": "npm run build",
+    "prepack": "echo 'working around yarn bug'; yarn run prepare",
     "watch": "npm run build -- --watch"
   },
   "dependencies": {
