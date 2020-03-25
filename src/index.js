@@ -53,7 +53,8 @@ export function fromSJSON(json) {
 // Takes a Sketch JSON tree and turns it into a native object. May throw on invalid data
 export function fromSJSONDictionary(jsonTree) {
   _checkEnv();
-  const decoded = MSJSONDictionaryUnarchiver.unarchiveObjectFromDictionary_asVersion_corruptionDetected_error(jsonTree, SKETCH_HIGHEST_COMPATIBLE_VERSION, null, null);
+  const uace = MSJSONDictionaryUnarchiver.unarchivedObjectFromDictionary_asVersion_corruptionDetected_error || MSJSONDictionaryUnarchiver.unarchiveObjectFromDictionary_asVersion_corruptionDetected_error;
+  const decoded = uace(jsonTree, SKETCH_HIGHEST_COMPATIBLE_VERSION, null, null);
   const mutableClass = decoded.class().mutableClass();
   return mutableClass.alloc().initWithImmutableModelObject(decoded);
 }
